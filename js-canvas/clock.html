@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An analog clock that shows current time" />
+    <title>YNSRC - Analog Clock</title>
+    <style type="text/css">
+        html, body, canvas { margin: 0; padding: 0; }
+        body { overflow: hidden; }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById("canvas");
+        var ctx = /** @type {CanvasRenderingContext2D} */ (canvas.getContext("2d"));
+
+        function deg2rad(x) { return x * Math.PI / 180; }
+
+        function drawClock() {
+            ctx.reset();
+
+            var cx = canvas.width / 2;
+            var cy = canvas.height / 2;
+
+            var r1 = Math.min(cx, cy) / 1.5;
+            var r2 = r1 * 1.1;
+            var rsec = r1 * 0.9;
+            var rmin = r1 * 0.8;
+            var rhour = r1 * 0.7;
+            var rdot = r1 * 0.06;
+
+            ctx.lineCap = "butt";
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "#000000";
+
+            for (var i = 0; i < 60; i++) {
+                var x = Math.cos(6*i*Math.PI/180-Math.PI/2);
+                var y = Math.sin(6*i*Math.PI/180-Math.PI/2);
+            
+                if (i % 5 == 0) {
+                    ctx.beginPath();
+                    ctx.lineWidth = 5;
+                    ctx.moveTo(cx + (r1-6)*x, cy + (r1-6)*y);
+                    ctx.lineTo(cx + r2*x, cy + r2*y);
+                    ctx.stroke();
+                } else {
+                    ctx.beginPath();
+                    ctx.lineWidth = 2;
+                    ctx.moveTo(cx + r1*x, cy + r1*y);
+                    ctx.lineTo(cx + r2*x, cy + r2*y);
+                    ctx.stroke();
+                }
+            }
+
+            ctx.beginPath();
+            ctx.font = "22px sans-serif";
+            
+            var lbl = "YNSRC";
+            ctx.fillText(lbl, cx - ctx.measureText(lbl).width / 2, cy - r1 * 0.6);
+            ctx.fill();
+
+            var date = new Date();
+
+            var ah = deg2rad(30 * (date.getHours() + date.getMinutes() / 60) - 90);
+            var am = deg2rad(6 * (date.getMinutes() + date.getSeconds() / 60)- 90);
+            var as = deg2rad(6 * date.getSeconds() - 90);
+
+            ctx.beginPath();
+            ctx.lineCap = "round";
+            ctx.lineWidth = 6;
+            ctx.strokeStyle = "#000000";
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx+rhour*Math.cos(ah), cy+rhour*Math.sin(ah));
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = "#000000";
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx+rmin*Math.cos(am), cy+rmin*Math.sin(am));
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = "#FF0000";
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx+rsec*Math.cos(as), cy+rsec*Math.sin(as));
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.fillStyle="#333333";
+            ctx.arc(cx, cy, rdot, 0, 2*Math.PI);
+            ctx.fill();
+        }
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            drawClock();
+        }
+
+        window.addEventListener("resize", resizeCanvas, false);
+
+        resizeCanvas();
+
+        setInterval(drawClock, 1000);
+
+    </script>
+</body>
+</html>
