@@ -1,9 +1,7 @@
 # YNSRC - Web Examples
 
-HTML5, CSS, JavaScript example sources.
+HTML5, CSS, JavaScript examples and HTML outputs from other projects.
 
 # Examples
 1. [Analog Clock](js-canvas/clock.html)
-
-# License
-The Unlicense. Feel free to use or change it how you need.
+2. [LibGDX Maze Solver](libgdx-maze-solver/index.html)
