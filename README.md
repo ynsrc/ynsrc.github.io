@@ -1,4 +1,4 @@
-# YNSRC - Web Examples
+# [YNSRC](https://github.com/ynsrc) - Web Examples
 
 HTML5, CSS, JavaScript examples and HTML outputs from other projects.
 
